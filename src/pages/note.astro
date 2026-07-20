@@ -1,0 +1,192 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const noteUrl = "https://note.com/shinju_s";
+---
+
+<BaseLayout
+  title="NOTE | 清水慎樹 Official Website"
+  description="清水慎樹の音楽制作の背景、漫画、雑記をnoteで紹介しています。"
+>
+  <main>
+    <section class="hero">
+      <p class="label">WRITING & STORIES</p>
+
+      <h1>NOTE</h1>
+
+      <p class="lead">
+        楽曲が生まれた背景、歌詞に込めた考え、漫画や日々の雑記。
+        作品の向こう側にある言葉を、noteで発信しています。
+      </p>
+
+      <a
+        class="note-button"
+        href={noteUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        noteを読む
+      </a>
+    </section>
+
+    <section class="categories">
+      <article>
+        <p class="number">01</p>
+        <h2>音楽と歌詞</h2>
+        <p>
+          楽曲の制作背景、歌詞の解釈、作者として伝えたかったこと。
+        </p>
+      </article>
+
+      <article>
+        <p class="number">02</p>
+        <h2>漫画と物語</h2>
+        <p>
+          ARMS漫画をはじめとする、人物や物語を描いた作品。
+        </p>
+      </article>
+
+      <article>
+        <p class="number">03</p>
+        <h2>雑記と日常</h2>
+        <p>
+          制作を続ける中で考えたことや、日々の出来事について。
+        </p>
+      </article>
+    </section>
+
+    <section class="bottom-link">
+      <p>すべての記事はnoteで公開しています。</p>
+
+      <a
+        href={noteUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        清水慎樹のnoteへ →
+      </a>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  main {
+    width: min(1120px, 88vw);
+    margin: 0 auto;
+    padding-bottom: 120px;
+  }
+
+  .hero {
+    min-height: 78vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 150px 0 90px;
+  }
+
+  .label,
+  .number {
+    margin: 0;
+    color: #85858c;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+  }
+
+  h1 {
+    margin: 12px 0 30px;
+    font-size: clamp(4rem, 12vw, 9rem);
+    line-height: 0.95;
+    letter-spacing: -0.06em;
+  }
+
+  .lead {
+    max-width: 720px;
+    margin: 0;
+    color: #b8b8be;
+    font-size: clamp(1rem, 2.2vw, 1.25rem);
+    line-height: 2;
+  }
+
+  .note-button {
+    align-self: flex-start;
+    display: inline-block;
+    margin-top: 42px;
+    padding: 13px 24px;
+    border-radius: 999px;
+    background: #ffffff;
+    color: #111111;
+    font-size: 0.9rem;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  .categories {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .categories article {
+    padding: 48px 34px 52px 0;
+  }
+
+  .categories article + article {
+    padding-left: 34px;
+    border-left: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  h2 {
+    margin: 18px 0 14px;
+    font-size: clamp(1.5rem, 3vw, 2.2rem);
+  }
+
+  .categories article p:last-child {
+    margin: 0;
+    color: #9999a0;
+    line-height: 1.85;
+  }
+
+  .bottom-link {
+    padding: 80px 0 0;
+  }
+
+  .bottom-link p {
+    color: #929298;
+  }
+
+  .bottom-link a {
+    display: inline-block;
+    margin-top: 8px;
+    color: #ffffff;
+    text-decoration: underline;
+    text-underline-offset: 7px;
+  }
+
+  @media (max-width: 700px) {
+    main {
+      width: calc(100% - 36px);
+      padding-bottom: 80px;
+    }
+
+    .hero {
+      min-height: auto;
+      padding: 160px 0 90px;
+    }
+
+    .categories {
+      grid-template-columns: 1fr;
+    }
+
+    .categories article,
+    .categories article + article {
+      padding: 38px 0;
+      border-left: 0;
+    }
+
+    .categories article + article {
+      border-top: 1px solid rgba(255, 255, 255, 0.12);
+    }
+  }
+</style>

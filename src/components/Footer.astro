@@ -1,0 +1,61 @@
+<footer>
+  <div class="inner">
+    <nav>
+      <a href="/">Home</a>
+      <a href="/music">Music</a>
+      <a href="/lyrics">Lyrics</a>
+      <a href="/note">note</a>
+      <a href="/profile">Profile</a>
+    </nav>
+
+    <p>
+      © 2026 Shinju Shimizu<br>
+      All Rights Reserved.
+    </p>
+  </div>
+</footer>
+
+<style>
+footer{
+    margin-top:120px;
+    border-top:1px solid rgba(255,255,255,.1);
+}
+
+.inner{
+    width:calc(100% - 36px);
+    max-width:760px;
+    margin:auto;
+    padding:56px 0 40px;
+}
+
+nav{
+    display:flex;
+    flex-wrap:wrap;
+    gap:18px;
+}
+
+nav a{
+    color:#bdbdc2;
+    text-decoration:none;
+    font-size:.92rem;
+}
+
+nav a:hover{
+    color:#fff;
+}
+
+p{
+    margin-top:42px;
+    color:#777;
+    font-size:.8rem;
+    line-height:1.8;
+}
+
+@media(min-width:700px){
+
+.inner{
+    max-width:1000px;
+}
+
+}
+</style>

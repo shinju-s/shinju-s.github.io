@@ -1,0 +1,96 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="404 | 清水慎樹 Official Website"
+  description="ページが見つかりません。"
+>
+
+<main class="error">
+
+    <p class="code">
+        404
+    </p>
+
+    <h1>
+        ページが見つかりません
+    </h1>
+
+    <p class="text">
+        お探しのページは移動したか、
+        削除された可能性があります。
+    </p>
+
+    <a href="/">
+        トップページへ戻る
+    </a>
+
+</main>
+
+</BaseLayout>
+
+<style>
+
+.error{
+
+    width:calc(100% - 36px);
+    max-width:700px;
+
+    min-height:70vh;
+
+    margin:auto;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    text-align:center;
+
+}
+
+.code{
+
+    color:#777;
+
+    letter-spacing:.2em;
+
+}
+
+h1{
+
+    margin:18px 0;
+
+}
+
+.text{
+
+    color:#999;
+
+    line-height:1.9;
+
+}
+
+a{
+
+    margin-top:40px;
+
+    padding:14px 26px;
+
+    border-radius:999px;
+
+    background:white;
+
+    color:#111;
+
+    text-decoration:none;
+
+    font-weight:700;
+
+}
+
+</style>

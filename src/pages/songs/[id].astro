@@ -1,0 +1,454 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { albums } from "../../data/albums";
+import { songs } from "../../data/songs";
+
+export function getStaticPaths() {
+  return songs.map((song) => {
+    const album = albums.find(
+      (album) => album.releaseOrder === song.albumNumber
+    );
+
+    return {
+      params: {
+        id: song.id,
+      },
+      props: {
+        song,
+        album,
+      },
+    };
+  });
+}
+
+type Props = {
+  song: (typeof songs)[number];
+  album: (typeof albums)[number] | undefined;
+};
+
+const { song, album } = Astro.props as Props;
+
+const albumSongs = songs
+  .filter((item) => item.albumNumber === song.albumNumber)
+  .sort((a, b) => a.trackNumber - b.trackNumber);
+
+const getYouTubeEmbedUrl = (url?: string) => {
+  if (!url) return "";
+
+  try {
+    const parsedUrl = new URL(url);
+
+    if (parsedUrl.hostname === "youtu.be") {
+      return `https://www.youtube.com/embed/${parsedUrl.pathname.slice(1)}`;
+    }
+
+    if (parsedUrl.hostname.includes("youtube.com")) {
+      const videoId = parsedUrl.searchParams.get("v");
+
+      if (videoId) {
+        return `https://www.youtube.com/embed/${videoId}`;
+      }
+    }
+  } catch {
+    return "";
+  }
+
+  return "";
+};
+
+const youtubeEmbedUrl = getYouTubeEmbedUrl(song.youtube);
+---
+
+<BaseLayout
+  title={`${song.title} | 清水慎樹 Official Website`}
+  description={`清水慎樹の楽曲『${song.title}』の作品ページです。`}
+>
+  <main>
+    <section class="song-hero">
+      <p class="song-number">{song.id}</p>
+
+      <h1>{song.title}</h1>
+
+      {
+        album && (
+          <a class="album-name" href={`/music/${album.slug}`}>
+            {album.title}
+          </a>
+        )
+      }
+
+      <div class="main-cover">
+        <img
+          src={song.image}
+          alt={`${song.title} ジャケット`}
+          width="900"
+          height="900"
+        />
+      </div>
+    </section>
+
+    {
+      youtubeEmbedUrl && (
+        <section class="content-section">
+          <p class="section-label">MUSIC VIDEO</p>
+          <h2>YouTube</h2>
+
+          <div class="video-wrapper">
+            <iframe
+              src={youtubeEmbedUrl}
+              title={`${song.title} YouTube動画`}
+              loading="lazy"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+            />
+          </div>
+        </section>
+      )
+    }
+
+    <section class="content-section">
+      <p class="section-label">LYRICS</p>
+      <h2>歌詞</h2>
+
+      {
+        song.lyrics ? (
+          <div class="lyrics">
+            {song.lyrics.split("\n").map((line) => (
+              <p>{line || "\u00a0"}</p>
+            ))}
+          </div>
+        ) : (
+          <p class="placeholder">歌詞は準備中です。</p>
+        )
+      }
+    </section>
+
+    {
+      song.note && (
+        <section class="link-section">
+          <div>
+            <p class="section-label">NOTE</p>
+            <h2>この曲の記事を読む</h2>
+          </div>
+
+          <a
+            class="round-button"
+            href={song.note}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            noteへ →
+          </a>
+        </section>
+      )
+    }
+
+    {
+      song.tunecore && (
+        <section class="link-section">
+          <div>
+            <p class="section-label">STREAMING</p>
+            <h2>配信サービスで聴く</h2>
+          </div>
+
+          <a
+            class="round-button primary"
+            href={song.tunecore}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            TuneCoreへ →
+          </a>
+        </section>
+      )
+    }
+
+    {
+      album && (
+        <section class="album-section">
+          <div class="album-heading">
+            <div>
+              <p class="section-label">ALBUM TRACKS</p>
+              <h2>{album.title}の収録曲</h2>
+            </div>
+
+            <a class="album-back" href={`/music/${album.slug}`}>
+              アルバムに戻る →
+            </a>
+          </div>
+
+          <div class="track-list">
+            {
+              albumSongs.map((item) => (
+                <a
+                  class:list={[
+                    "track-link",
+                    { current: item.id === song.id },
+                  ]}
+                  href={`/songs/${item.id}`}
+                >
+                  <span>{item.id}</span>
+                  <strong>{item.title}</strong>
+
+                  {item.id === song.id && <em>NOW</em>}
+                </a>
+              ))
+            }
+          </div>
+        </section>
+      )
+    }
+  </main>
+</BaseLayout>
+
+<style>
+  main {
+    width: calc(100% - 36px);
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 132px 0 72px;
+  }
+
+  .song-hero {
+    padding-bottom: 72px;
+    text-align: center;
+  }
+
+  .song-number,
+  .section-label {
+    margin: 0;
+    color: #86868d;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    line-height: 1.5;
+  }
+
+  h1 {
+    margin: 12px auto 10px;
+    max-width: 100%;
+    font-size: clamp(2.7rem, 14vw, 5rem);
+    line-height: 1.02;
+    letter-spacing: -0.05em;
+    overflow-wrap: anywhere;
+  }
+
+  .album-name {
+    display: inline-block;
+    margin-bottom: 34px;
+    color: #aaaab0;
+    font-size: 0.88rem;
+    line-height: 1.6;
+    text-decoration: underline;
+    text-underline-offset: 6px;
+  }
+
+  .main-cover {
+    width: 100%;
+    max-width: 440px;
+    aspect-ratio: 1 / 1;
+    margin: 0 auto;
+    overflow: hidden;
+    border-radius: 14px;
+    background: #161618;
+    box-shadow: 0 20px 55px rgba(0, 0, 0, 0.4);
+  }
+
+  .main-cover img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+
+  .content-section,
+  .link-section,
+  .album-section {
+    padding: 64px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  h2 {
+    margin: 10px 0 30px;
+    font-size: clamp(1.85rem, 9vw, 3rem);
+    line-height: 1.2;
+    letter-spacing: -0.035em;
+    overflow-wrap: anywhere;
+  }
+
+  .video-wrapper {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #161618;
+  }
+
+  .video-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border: 0;
+  }
+
+  .lyrics {
+    max-width: 620px;
+    color: #e0e0e3;
+    font-size: 1rem;
+    line-height: 2.15;
+    word-break: normal;
+    overflow-wrap: break-word;
+  }
+
+  .lyrics p {
+    margin: 0;
+    min-height: 2.15em;
+  }
+
+  .placeholder {
+    margin: 0;
+    color: #898990;
+    font-size: 0.95rem;
+  }
+
+  .link-section {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 26px;
+  }
+
+  .link-section h2 {
+    margin-bottom: 0;
+  }
+
+  .round-button {
+    width: 100%;
+    min-height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 13px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 999px;
+    color: #ffffff;
+    font-size: 0.92rem;
+    font-weight: 700;
+    line-height: 1.4;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  .round-button.primary {
+    background: #ffffff;
+    color: #111111;
+  }
+
+  .album-heading {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 22px;
+    margin-bottom: 34px;
+  }
+
+  .album-heading h2 {
+    margin-bottom: 0;
+  }
+
+  .album-back {
+    color: #b5b5ba;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    text-decoration: underline;
+    text-underline-offset: 6px;
+  }
+
+  .track-list {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .track-link {
+    min-height: 58px;
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) auto;
+    gap: 10px;
+    align-items: center;
+    padding: 15px 0;
+    color: #c8c8cd;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    text-decoration: none;
+  }
+
+  .track-link span {
+    color: #74747b;
+    font-size: 0.72rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .track-link strong {
+    min-width: 0;
+    font-size: 0.96rem;
+    line-height: 1.45;
+    overflow-wrap: anywhere;
+  }
+
+  .track-link em {
+    color: #ffffff;
+    font-size: 0.6rem;
+    font-style: normal;
+    letter-spacing: 0.14em;
+  }
+
+  .track-link.current {
+    color: #ffffff;
+  }
+
+  @media (min-width: 700px) {
+    main {
+      width: min(88vw, 860px);
+      padding: 160px 0 110px;
+    }
+
+    .song-hero {
+      padding-bottom: 100px;
+    }
+
+    .album-name {
+      margin-bottom: 46px;
+    }
+
+    .content-section,
+    .link-section,
+    .album-section {
+      padding: 88px 0;
+    }
+
+    .link-section {
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: row;
+      gap: 32px;
+    }
+
+    .round-button {
+      width: auto;
+      min-width: 190px;
+      flex-shrink: 0;
+    }
+
+    .album-heading {
+      align-items: flex-end;
+      justify-content: space-between;
+      flex-direction: row;
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    .track-link {
+      grid-template-columns: 58px minmax(0, 1fr) auto;
+      gap: 16px;
+      padding: 18px 0;
+    }
+  }
+</style>

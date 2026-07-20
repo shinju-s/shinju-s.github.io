@@ -1,0 +1,218 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { albums } from "../data/albums";
+
+const sortedAlbums = [...albums].sort(
+  (a, b) => b.releaseOrder - a.releaseOrder
+);
+
+const toOrdinal = (number: number) => {
+  const lastTwoDigits = number % 100;
+
+  if (lastTwoDigits >= 11 && lastTwoDigits <= 13) {
+    return `${number}th`;
+  }
+
+  switch (number % 10) {
+    case 1:
+      return `${number}st`;
+    case 2:
+      return `${number}nd`;
+    case 3:
+      return `${number}rd`;
+    default:
+      return `${number}th`;
+  }
+};
+---
+
+<BaseLayout
+  title="MUSIC | 清水慎樹 Official Website"
+  description="清水慎樹のアルバムと楽曲を、最新作から順に紹介します。"
+>
+  <main>
+    <section class="page-heading">
+      <p class="label">DISCOGRAPHY</p>
+      <h1>MUSIC</h1>
+      <p class="introduction">
+        清水慎樹が制作した音楽作品を、最新アルバムから順に紹介します。
+      </p>
+    </section>
+
+    <section class="album-section" aria-labelledby="album-heading">
+      <h2 id="album-heading">Albums</h2>
+
+      <div class="album-grid">
+        {
+          sortedAlbums.map((album) => (
+            <a
+  class="album-card"
+  href={`/music/${album.slug}`}
+  aria-label={`${album.title} の収録曲を見る`}
+>
+              <div class="cover">
+                <img
+                  src={album.cover}
+                  alt={`${album.title} アルバムジャケット`}
+                  width="800"
+                  height="800"
+                  loading="lazy"
+                />
+              </div>
+
+              <div class="album-info">
+                <p class="album-number">
+                  {toOrdinal(album.releaseOrder)} Album
+                </p>
+
+                <h3>{album.title}</h3>
+
+                <p class="detail-link">収録曲を見る →</p>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  main {
+    width: min(1120px, 88vw);
+    margin: 0 auto;
+    padding-bottom: 120px;
+  }
+
+  .page-heading {
+    padding: 180px 0 90px;
+  }
+
+  .label {
+    margin: 0 0 14px;
+    color: #8c8c93;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(4rem, 12vw, 9rem);
+    line-height: 0.95;
+    letter-spacing: -0.06em;
+  }
+
+  .introduction {
+    max-width: 650px;
+    margin: 32px 0 0;
+    color: #b5b5bb;
+    font-size: clamp(1rem, 2vw, 1.2rem);
+  }
+
+  .album-section {
+    padding-top: 70px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  h2 {
+    margin: 0 0 42px;
+    font-size: clamp(2rem, 5vw, 4rem);
+    letter-spacing: -0.04em;
+  }
+
+  .album-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 56px 28px;
+  }
+
+  .album-card {
+    min-width: 0;
+  }
+
+  .cover {
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 14px;
+    background: #161618;
+  }
+
+  .cover img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+    transition:
+      transform 0.45s ease,
+      opacity 0.45s ease;
+  }
+
+  .album-card:hover .cover img {
+    transform: scale(1.025);
+    opacity: 0.9;
+  }
+
+  .album-info {
+    padding-top: 18px;
+  }
+
+  .album-number {
+    margin: 0 0 5px;
+    color: #838389;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  h3 {
+    margin: 0;
+    font-size: clamp(1.25rem, 2.4vw, 1.75rem);
+    line-height: 1.3;
+  }
+
+  .detail-link {
+    margin: 10px 0 0;
+    color: #aaaab0;
+    font-size: 0.85rem;
+  }
+
+  @media (max-width: 850px) {
+    .album-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 560px) {
+    main {
+      width: min(100% - 36px, 1120px);
+      padding-bottom: 80px;
+    }
+
+    .page-heading {
+      padding: 150px 0 70px;
+    }
+
+    .album-grid {
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+
+    .cover {
+      max-width: 420px;
+    }
+  }
+  .album-card {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.album-card:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 6px;
+  border-radius: 14px;
+}
+</style>

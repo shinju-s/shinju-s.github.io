@@ -1,0 +1,111 @@
+<header class="header">
+
+  <a href="/" class="logo">
+    清水慎樹
+  </a>
+
+  <nav>
+
+    <a href="/music">Music</a>
+
+    <a href="/lyrics">Lyrics</a>
+
+    <a href="/videos">Videos</a>
+
+    <a href="/note">note</a>
+
+    <a href="/profile">Profile</a>
+
+  </nav>
+
+</header>
+
+<style>
+
+.header{
+
+    position:fixed;
+
+    top:0;
+
+    left:0;
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:24px 48px;
+
+    background:rgba(11,11,13,.75);
+
+    backdrop-filter:blur(18px);
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+    z-index:1000;
+
+}
+
+.logo{
+
+    font-size:20px;
+
+    font-weight:bold;
+
+    letter-spacing:.08em;
+
+}
+
+nav{
+
+    display:flex;
+
+    gap:32px;
+
+}
+
+nav a{
+
+    color:#cccccc;
+
+    font-size:15px;
+
+    transition:.3s;
+
+}
+
+nav a:hover{
+
+    color:white;
+
+}
+
+@media(max-width:900px){
+
+    .header{
+
+        padding:20px;
+
+        flex-direction:column;
+
+        gap:16px;
+
+    }
+
+    nav{
+
+        gap:18px;
+
+        flex-wrap:wrap;
+
+        justify-content:center;
+
+    }
+
+}
+
+</style>

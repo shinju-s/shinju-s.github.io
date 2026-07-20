@@ -1,0 +1,283 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { songs } from "../data/songs";
+
+const sortedSongs = [...songs].sort(
+  (a, b) =>
+    b.albumNumber - a.albumNumber ||
+    a.trackNumber - b.trackNumber
+);
+---
+
+<BaseLayout
+  title="LYRICS | 清水慎樹 Official Website"
+  description="清水慎樹の全楽曲と歌詞を、曲名やアルバム名から検索できます。"
+>
+  <main>
+    <section class="page-heading">
+      <p class="label">SONGS & LYRICS</p>
+      <h1>LYRICS</h1>
+
+      <p class="introduction">
+        曲名、アルバム名、歌詞の言葉から楽曲を探せます。
+      </p>
+
+      <div class="search-area">
+        <label for="song-search">楽曲を検索</label>
+
+        <input
+          id="song-search"
+          type="search"
+          placeholder="曲名・アルバム名・歌詞を入力"
+          autocomplete="off"
+        />
+      </div>
+    </section>
+
+    <section class="songs-section" aria-labelledby="songs-heading">
+      <div class="section-heading">
+        <h2 id="songs-heading">All Songs</h2>
+        <p>{songs.length} Tracks</p>
+      </div>
+
+      <div class="song-grid" id="song-grid">
+        {
+          sortedSongs.map((song) => (
+            <a
+              class="song-card"
+              href={`/songs/${song.id}`}
+              data-song-card
+              data-search={`${song.title} ${song.albumTitle} ${song.lyrics ?? ""}`.toLowerCase()}
+            >
+              <div class="cover">
+                <img
+                  src={song.image}
+                  alt={`${song.title} ジャケット`}
+                  width="600"
+                  height="600"
+                  loading="lazy"
+                />
+              </div>
+
+              <div class="song-info">
+                <p class="song-number">{song.id}</p>
+                <h3>{song.title}</h3>
+                <p class="album-title">{song.albumTitle}</p>
+              </div>
+            </a>
+          ))
+        }
+      </div>
+
+      <p id="empty-result" class="empty-result" hidden>
+        該当する楽曲が見つかりませんでした。
+      </p>
+    </section>
+  </main>
+</BaseLayout>
+
+<script>
+  const input = document.querySelector("#song-search");
+  const cards = [...document.querySelectorAll("[data-song-card]")];
+  const emptyResult = document.querySelector("#empty-result");
+
+  input?.addEventListener("input", () => {
+    const query = input.value.trim().toLowerCase();
+    let visibleCount = 0;
+
+    cards.forEach((card) => {
+      const searchText = card.dataset.search ?? "";
+      const isMatch = searchText.includes(query);
+
+      card.hidden = !isMatch;
+
+      if (isMatch) {
+        visibleCount += 1;
+      }
+    });
+
+    if (emptyResult) {
+      emptyResult.hidden = visibleCount > 0;
+    }
+  });
+</script>
+
+<style>
+  main {
+    width: min(1120px, 88vw);
+    margin: 0 auto;
+    padding-bottom: 120px;
+  }
+
+  .page-heading {
+    padding: 180px 0 90px;
+  }
+
+  .label {
+    margin: 0 0 14px;
+    color: #8c8c93;
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.25em;
+  }
+
+  h1 {
+    margin: 0;
+    font-size: clamp(4rem, 12vw, 9rem);
+    line-height: 0.95;
+    letter-spacing: -0.06em;
+  }
+
+  .introduction {
+    max-width: 650px;
+    margin: 30px 0 0;
+    color: #b5b5bb;
+    font-size: 1.05rem;
+  }
+
+  .search-area {
+    max-width: 680px;
+    margin-top: 46px;
+  }
+
+  .search-area label {
+    display: block;
+    margin-bottom: 10px;
+    color: #a7a7ad;
+    font-size: 0.8rem;
+  }
+
+  .search-area input {
+    width: 100%;
+    padding: 17px 20px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 12px;
+    outline: none;
+    background: #151517;
+    color: #ffffff;
+    font: inherit;
+  }
+
+  .search-area input:focus {
+    border-color: rgba(255, 255, 255, 0.65);
+  }
+
+  .songs-section {
+    padding-top: 70px;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .section-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 42px;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: clamp(2rem, 5vw, 4rem);
+    letter-spacing: -0.04em;
+  }
+
+  .section-heading p {
+    margin: 0;
+    color: #85858c;
+  }
+
+  .song-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 44px 22px;
+  }
+
+  .song-card {
+    display: block;
+    min-width: 0;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .song-card[hidden] {
+    display: none;
+  }
+
+  .cover {
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #161618;
+  }
+
+  .cover img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    transition:
+      transform 0.4s ease,
+      opacity 0.4s ease;
+  }
+
+  .song-card:hover .cover img {
+    transform: scale(1.025);
+    opacity: 0.9;
+  }
+
+  .song-info {
+    padding-top: 14px;
+  }
+
+  .song-number {
+    margin: 0;
+    color: #77777e;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+  }
+
+  h3 {
+    margin: 6px 0 3px;
+    font-size: 1.05rem;
+    line-height: 1.4;
+  }
+
+  .album-title {
+    margin: 0;
+    color: #929298;
+    font-size: 0.82rem;
+  }
+
+  .empty-result {
+    padding: 80px 0;
+    color: #929298;
+    text-align: center;
+  }
+
+  @media (max-width: 900px) {
+    .song-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 650px) {
+    main {
+      width: calc(100% - 36px);
+      padding-bottom: 80px;
+    }
+
+    .page-heading {
+      padding: 150px 0 70px;
+    }
+
+    .song-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 36px 16px;
+    }
+
+    h3 {
+      font-size: 0.95rem;
+    }
+  }
+</style>
