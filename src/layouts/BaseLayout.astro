@@ -47,6 +47,35 @@ const ogImageURL = new URL(ogImage, Astro.site);
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageURL} />
+  <script
+
+  type="application/ld+json"
+
+  set:html={JSON.stringify({
+
+    "@context": "https://schema.org",
+
+    "@type": "Person",
+
+    name: "清水慎樹",
+
+    url: "https://shinju-s.github.io",
+
+    jobTitle: "Singer / Songwriter",
+
+    description: "ARMSとして音楽・歌詞・物語を制作するアーティスト。",
+
+    sameAs: [
+
+      "https://note.com/shinju_s",
+
+      "https://www.youtube.com/@ARMSMusicChannel"
+
+    ]
+
+  })}
+
+/>
   </head>
 
   <body>

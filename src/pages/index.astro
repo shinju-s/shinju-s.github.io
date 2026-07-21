@@ -10,19 +10,29 @@ import LatestNote from "../components/LatestNote.astro";
 
     <section class="hero">
 
-      <p class="sub">
-        Official Website
-      </p>
+  <img
+    src="/images/music/10-rocking-roads/10-4.png"
+    alt="Resonates"
+    class="hero-cover"
+  />
 
-      <h1>
-        清水慎樹
-      </h1>
+  <p class="hero-label">
+    Latest Release
+  </p>
 
-      <p class="catch">
-        音楽と言葉、その先にある物語。
-      </p>
+  <h1>
+    Resonates
+  </h1>
 
-    </section>
+  <p class="hero-album">
+    10th Album『Rocking Roads』
+  </p>
+
+  <a href="/music/rocking-roads" class="hero-button">
+    Albumを見る
+  </a>
+
+</section>
 
     <LatestRelease />
 <LatestNote />
@@ -35,17 +45,29 @@ import LatestNote from "../components/LatestNote.astro";
     width: 100%;
   }
 
-  .hero {
-    min-height: 78svh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    width: calc(100% - 36px);
-    max-width: 760px;
-    margin: 0 auto;
-    padding: 132px 0 76px;
-  }
+ .hero {
+
+  min-height: 100svh;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+
+  align-items: center;
+
+  text-align: center;
+
+  width: calc(100% - 36px);
+
+  max-width: 760px;
+
+  margin: 0 auto;
+
+  padding: 120px 0;
+
+}
 
   .sub {
     margin: 0 0 14px;
@@ -56,7 +78,49 @@ import LatestNote from "../components/LatestNote.astro";
     line-height: 1.5;
     text-transform: uppercase;
   }
+.hero-cover{
+  width: min(78vw, 420px);
+  aspect-ratio: 1;
+  border-radius: 22px;
+  margin-bottom: 36px;
+  box-shadow: 0 28px 70px rgba(0,0,0,.45);
+}
 
+.hero-label{
+  margin:0;
+  color:#8f8f95;
+  font-size:.75rem;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+}
+
+.hero-album{
+  margin:18px 0 34px;
+  color:#b6b6bc;
+  font-size:1.1rem;
+}
+
+.hero-button{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  min-width:180px;
+  height:52px;
+
+  border:1px solid rgba(255,255,255,.18);
+  border-radius:999px;
+
+  color:#fff;
+  text-decoration:none;
+
+  transition:.25s;
+}
+
+.hero-button:hover{
+  background:#fff;
+  color:#111;
+}
   h1 {
     margin: 0;
     max-width: 100%;
