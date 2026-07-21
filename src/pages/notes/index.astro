@@ -1,0 +1,161 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
+---
+
+<BaseLayout title="Notes | 清水慎樹 Official Website">
+  <Breadcrumb
+    items={[
+      { label: "Home", href: "/" },
+      { label: "Notes" },
+    ]}
+  />
+
+  <main class="notes-page">
+    <div class="page-heading">
+      <p class="section-label">JOURNAL & STORIES</p>
+
+      <h1>Notes</h1>
+
+      <p class="description">
+        ARMSの作品にまつわる記事と、清水慎樹個人の記録を、
+        それぞれのnoteに分けて掲載しています。
+      </p>
+    </div>
+
+    <div class="note-grid">
+      <a class="note-card" href="/notes/arms">
+        <div>
+          <p class="card-label">MUSIC & CREATION</p>
+
+          <h2>ARMS Note</h2>
+
+          <p>
+            楽曲解説、歌詞に込めた想い、制作秘話、
+            ARMS漫画、リリース情報など。
+          </p>
+        </div>
+
+        <span>記事一覧を見る →</span>
+      </a>
+
+      <a class="note-card" href="/notes/shinju">
+        <div>
+          <p class="card-label">LIFE & THOUGHTS</p>
+
+          <h2>Shinju Note</h2>
+
+          <p>
+            日々の出来事、AI活用、ホームページ制作、
+            仕事や人生についての記録など。
+          </p>
+        </div>
+
+        <span>記事一覧を見る →</span>
+      </a>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .notes-page {
+    width: calc(100% - 36px);
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 72px 0 100px;
+  }
+
+  .page-heading {
+    max-width: 720px;
+  }
+
+  .section-label,
+  .card-label {
+    margin: 0;
+    color: #86868d;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    line-height: 1.5;
+  }
+
+  h1 {
+    margin: 10px 0 20px;
+    font-size: clamp(2.6rem, 10vw, 5rem);
+    line-height: 1.05;
+    letter-spacing: -0.045em;
+  }
+
+  .description {
+    margin: 0;
+    color: #a6a6ac;
+    font-size: 0.96rem;
+    line-height: 1.9;
+  }
+
+  .note-grid {
+    display: grid;
+    gap: 18px;
+    margin-top: 48px;
+  }
+
+  .note-card {
+    min-height: 310px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 28px;
+    color: inherit;
+    background: rgba(255, 255, 255, 0.035);
+    border: 1px solid rgba(255, 255, 255, 0.11);
+    border-radius: 22px;
+    text-decoration: none;
+    transition:
+      transform 0.2s ease,
+      border-color 0.2s ease,
+      background 0.2s ease;
+  }
+
+  .note-card:hover {
+    transform: translateY(-3px);
+    background: rgba(255, 255, 255, 0.055);
+    border-color: rgba(255, 255, 255, 0.22);
+  }
+
+  .note-card h2 {
+    margin: 12px 0 16px;
+    font-size: clamp(1.7rem, 7vw, 2.5rem);
+    line-height: 1.2;
+    letter-spacing: -0.03em;
+  }
+
+  .note-card p:not(.card-label) {
+    margin: 0;
+    color: #9d9da3;
+    line-height: 1.85;
+  }
+
+  .note-card span {
+    margin-top: 42px;
+    color: #e4e4e7;
+    font-size: 0.88rem;
+    font-weight: 600;
+  }
+
+  @media (min-width: 760px) {
+    .notes-page {
+      padding: 96px 0 130px;
+    }
+
+    .note-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 24px;
+      margin-top: 64px;
+    }
+
+    .note-card {
+      min-height: 360px;
+      padding: 36px;
+    }
+  }
+</style>

@@ -1,4 +1,5 @@
 ---
+import Breadcrumb from "../components/Breadcrumb.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 const noteUrl = "https://note.com/shinju_s";
@@ -7,7 +8,12 @@ const noteUrl = "https://note.com/shinju_s";
 <BaseLayout
   title="NOTE | 清水慎樹 Official Website"
   description="清水慎樹の音楽制作の背景、漫画、雑記をnoteで紹介しています。"
->
+><Breadcrumb
+  items={[
+    { label: "Home", href: "/" },
+    { label: "note" },
+  ]}
+/>
   <main>
     <section class="hero">
       <p class="label">WRITING & STORIES</p>

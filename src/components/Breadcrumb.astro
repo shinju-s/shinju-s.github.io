@@ -1,0 +1,69 @@
+---
+export interface Crumb {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  items: Crumb[];
+}
+
+const { items } = Astro.props;
+---
+
+<nav aria-label="パンくずリスト" class="breadcrumb">
+  <ol>
+    {items.map((item, index) => (
+      <li>
+        {item.href && index !== items.length - 1 ? (
+          <a href={item.href}>{item.label}</a>
+        ) : (
+          <span aria-current="page">{item.label}</span>
+        )}
+
+        {index < items.length - 1 && (
+          <span class="separator">›</span>
+        )}
+      </li>
+    ))}
+  </ol>
+</nav>
+
+<style>
+.breadcrumb{
+  width:min(88vw,1120px);
+  margin:32px auto 0;
+}
+
+.breadcrumb ol{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  padding:0;
+  margin:0;
+  list-style:none;
+}
+
+.breadcrumb li{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.breadcrumb a{
+  color:#9b9ba2;
+  text-decoration:none;
+}
+
+.breadcrumb a:hover{
+  color:#fff;
+}
+
+.breadcrumb span{
+  color:#cfcfd4;
+}
+
+.separator{
+  color:#666;
+}
+</style>

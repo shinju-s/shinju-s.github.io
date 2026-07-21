@@ -1,4 +1,5 @@
 ---
+import Breadcrumb from "../components/Breadcrumb.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { songs } from "../data/songs";
 
@@ -12,7 +13,12 @@ const sortedSongs = [...songs].sort(
 <BaseLayout
   title="LYRICS | 清水慎樹 Official Website"
   description="清水慎樹の全楽曲と歌詞を、曲名やアルバム名から検索できます。"
->
+><Breadcrumb
+  items={[
+    { label: "Home", href: "/" },
+    { label: "Lyrics" },
+  ]}
+/>
   <main>
     <section class="page-heading">
       <p class="label">SONGS & LYRICS</p>

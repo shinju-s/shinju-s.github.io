@@ -1,5 +1,5 @@
 ---
-
+import Breadcrumb from "../components/Breadcrumb.astro";
 import BaseLayout from "../layouts/BaseLayout.astro";
 
 ---
@@ -10,7 +10,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
   description="作詞・作曲・音楽制作を行う清水慎樹のプロフィールです。"
 
->
+><Breadcrumb
+  items={[
+    { label: "Home", href: "/" },
+    { label: "Profile" },
+  ]}
+/>
 
   <main>
 

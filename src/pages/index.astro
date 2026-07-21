@@ -2,140 +2,190 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import LatestRelease from "../components/LatestRelease.astro";
 import LatestNote from "../components/LatestNote.astro";
+import { songs } from "../data/songs";
+
+const getOrdinal = (number: number) => {
+  const lastTwoDigits = number % 100;
+
+  if (lastTwoDigits >= 11 && lastTwoDigits <= 13) {
+    return `${number}th`;
+  }
+
+  switch (number % 10) {
+    case 1:
+      return `${number}st`;
+    case 2:
+      return `${number}nd`;
+    case 3:
+      return `${number}rd`;
+    default:
+      return `${number}th`;
+  }
+};
+
+const heroSongs = songs.map((song) => ({
+  id: song.id,
+  title: song.title,
+  image: song.image,
+  albumLabel: `${getOrdinal(song.albumNumber)} Album『${song.albumTitle}』`,
+}));
+
+const fallbackSong = heroSongs[0];
 ---
 
 <BaseLayout>
-
   <main>
-
     <section class="hero">
+      <a
+        class="hero-cover-link"
+        href={`/songs/${fallbackSong.id}`}
+        data-random-link
+        aria-label={`${fallbackSong.title}の曲ページを見る`}
+      >
+        <img
+          src={fallbackSong.image}
+          alt={`${fallbackSong.title} ジャケット`}
+          class="hero-cover"
+          data-random-cover
+        />
+      </a>
 
-  <img
-    src="/images/music/10-rocking-roads/10-4.png"
-    alt="Resonates"
-    class="hero-cover"
-  />
+      <p class="hero-label">
+        RANDOM PICK
+      </p>
 
-  <p class="hero-label">
-    Latest Release
-  </p>
+      <h1 data-random-title>
+        {fallbackSong.title}
+      </h1>
 
-  <h1>
-    Resonates
-  </h1>
+      <p class="hero-album" data-random-album>
+        {fallbackSong.albumLabel}
+      </p>
 
-  <p class="hero-album">
-    10th Album『Rocking Roads』
-  </p>
-
-  <a href="/music/rocking-roads" class="hero-button">
-    Albumを見る
-  </a>
-
-</section>
+      <a
+        href={`/songs/${fallbackSong.id}`}
+        class="hero-button"
+        data-random-link
+      >
+        曲を見る
+      </a>
+    </section>
 
     <LatestRelease />
-<LatestNote />
+    <LatestNote />
   </main>
-
 </BaseLayout>
+
+<script define:vars={{ heroSongs }}>
+  const randomSong =
+    heroSongs[Math.floor(Math.random() * heroSongs.length)];
+
+  const cover = document.querySelector("[data-random-cover]");
+  const title = document.querySelector("[data-random-title]");
+  const album = document.querySelector("[data-random-album]");
+  const links = document.querySelectorAll("[data-random-link]");
+
+  if (cover instanceof HTMLImageElement) {
+    cover.src = randomSong.image;
+    cover.alt = `${randomSong.title} ジャケット`;
+  }
+
+  if (title) {
+    title.textContent = randomSong.title;
+  }
+
+  if (album) {
+    album.textContent = randomSong.albumLabel;
+  }
+
+  links.forEach((link) => {
+    if (link instanceof HTMLAnchorElement) {
+      link.href = `/songs/${randomSong.id}`;
+
+      if (link.classList.contains("hero-cover-link")) {
+        link.setAttribute(
+          "aria-label",
+          `${randomSong.title}の曲ページを見る`
+        );
+      }
+    }
+  });
+</script>
 
 <style>
   main {
     width: 100%;
   }
 
- .hero {
+  .hero {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: calc(100% - 36px);
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 120px 0;
+    text-align: center;
+  }
 
-  min-height: 100svh;
+  .hero-cover-link {
+    display: block;
+    margin-bottom: 36px;
+    border-radius: 22px;
+  }
 
-  display: flex;
+  .hero-cover {
+    width: min(78vw, 420px);
+    aspect-ratio: 1;
+    display: block;
+    object-fit: cover;
+    border-radius: 22px;
+    box-shadow: 0 28px 70px rgba(0, 0, 0, 0.45);
+  }
 
-  flex-direction: column;
-
-  justify-content: center;
-
-  align-items: center;
-
-  text-align: center;
-
-  width: calc(100% - 36px);
-
-  max-width: 760px;
-
-  margin: 0 auto;
-
-  padding: 120px 0;
-
-}
-
-  .sub {
-    margin: 0 0 14px;
-    color: #85858c;
-    font-size: 0.68rem;
-    font-weight: 700;
+  .hero-label {
+    margin: 0;
+    color: #fef263;
+    font-size: 1rem;
     letter-spacing: 0.22em;
-    line-height: 1.5;
     text-transform: uppercase;
   }
-.hero-cover{
-  width: min(78vw, 420px);
-  aspect-ratio: 1;
-  border-radius: 22px;
-  margin-bottom: 36px;
-  box-shadow: 0 28px 70px rgba(0,0,0,.45);
-}
 
-.hero-label{
-  margin:0;
-  color:#8f8f95;
-  font-size:.75rem;
-  letter-spacing:.22em;
-  text-transform:uppercase;
-}
-
-.hero-album{
-  margin:18px 0 34px;
-  color:#b6b6bc;
-  font-size:1.1rem;
-}
-
-.hero-button{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-
-  min-width:180px;
-  height:52px;
-
-  border:1px solid rgba(255,255,255,.18);
-  border-radius:999px;
-
-  color:#fff;
-  text-decoration:none;
-
-  transition:.25s;
-}
-
-.hero-button:hover{
-  background:#fff;
-  color:#111;
-}
   h1 {
-    margin: 0;
     max-width: 100%;
+    margin: 0;
     font-size: clamp(3.4rem, 18vw, 6rem);
     line-height: 0.98;
     letter-spacing: -0.055em;
     overflow-wrap: anywhere;
   }
 
-  .catch {
-    max-width: 18em;
-    margin: 28px 0 0;
-    color: #c7c7cc;
-    font-size: clamp(1rem, 5vw, 1.25rem);
-    line-height: 1.9;
+  .hero-album {
+    margin: 18px 0 34px;
+    color: #b6b6bc;
+    font-size: 1.1rem;
+  }
+
+  .hero-button {
+    min-width: 180px;
+    height: 52px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 999px;
+    color: #ffffff;
+    text-decoration: none;
+    transition:
+      background 0.25s,
+      color 0.25s;
+  }
+
+  .hero-button:hover {
+    background: #ffffff;
+    color: #111111;
   }
 
   @media (min-width: 700px) {
@@ -145,18 +195,8 @@ import LatestNote from "../components/LatestNote.astro";
       padding: 160px 0 100px;
     }
 
-    .sub {
-      margin-bottom: 18px;
-    }
-
     h1 {
-      font-size: clamp(5rem, 12vw, 9rem);
-    }
-
-    .catch {
-      max-width: none;
-      margin-top: 34px;
-      font-size: 1.4rem;
+      font-size: clamp(2.2rem, 8vw, 3.8rem);
     }
   }
 </style>

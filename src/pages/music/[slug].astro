@@ -1,4 +1,5 @@
 ---
+import Breadcrumb from "../../components/Breadcrumb.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { albums } from "../../data/albums";
 import { songs } from "../../data/songs";
@@ -47,7 +48,19 @@ const toOrdinal = (number: number) => {
 <BaseLayout
   title={`${album.title} | 清水慎樹 Official Website`}
   description={`清水慎樹の${toOrdinal(album.releaseOrder)}アルバム『${album.title}』の収録曲一覧です。`}
->
+><Breadcrumb
+
+  items={[
+
+    { label: "Home", href: "/" },
+
+    { label: "Music", href: "/music" },
+
+    { label: album.title }
+
+  ]}
+
+/>
   <main>
     <section class="album-header">
       <div class="cover">
@@ -83,7 +96,7 @@ const toOrdinal = (number: number) => {
       <div class="track-grid">
         {
           albumSongs.map((song) => (
-            <article class="track-card">
+            <a class="track-card" href={`/songs/${song.id}`}>
               <div class="song-cover">
                 <img
                   src={song.image}
@@ -101,7 +114,7 @@ const toOrdinal = (number: number) => {
 
                 <h3>{song.title}</h3>
               </div>
-            </article>
+           </a>
           ))
         }
       </div>

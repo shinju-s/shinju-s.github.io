@@ -1,4 +1,5 @@
 ---
+import Breadcrumb from "../../components/Breadcrumb.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { albums } from "../../data/albums";
 import { songs } from "../../data/songs";
@@ -31,6 +32,19 @@ const { song, album } = Astro.props as Props;
 const albumSongs = songs
   .filter((item) => item.albumNumber === song.albumNumber)
   .sort((a, b) => a.trackNumber - b.trackNumber);
+const currentSongIndex = albumSongs.findIndex(
+  (item) => item.id === song.id
+);
+
+const previousSong =
+  currentSongIndex > 0
+    ? albumSongs[currentSongIndex - 1]
+    : undefined;
+
+const nextSong =
+  currentSongIndex < albumSongs.length - 1
+    ? albumSongs[currentSongIndex + 1]
+    : undefined;
 
 const getYouTubeEmbedUrl = (url?: string) => {
   if (!url) return "";
@@ -62,7 +76,21 @@ const youtubeEmbedUrl = getYouTubeEmbedUrl(song.youtube);
 <BaseLayout
   title={`${song.title} | 清水慎樹 Official Website`}
   description={`清水慎樹の楽曲『${song.title}』の作品ページです。`}
->
+><Breadcrumb
+  items={[
+    { label: "Home", href: "/" },
+    { label: "Music", href: "/music" },
+    ...(album
+      ? [
+          {
+            label: album.title,
+            href: `/music/${album.slug}`,
+          },
+        ]
+      : []),
+    { label: song.title },
+  ]}
+/>
   <main>
     <section class="song-hero">
       <p class="song-number">{song.id}</p>
@@ -142,7 +170,25 @@ const youtubeEmbedUrl = getYouTubeEmbedUrl(song.youtube);
         </section>
       )
     }
+{
+  (previousSong || nextSong) && (
+    <nav class="song-navigation" aria-label="前後の曲">
+      {previousSong ? (
+        <a class="prev-link" href={`/songs/${previousSong.id}`}>
+          ← {previousSong.id} {previousSong.title}
+        </a>
+      ) : (
+        <span />
+      )}
 
+      {nextSong ? (
+        <a class="next-link" href={`/songs/${nextSong.id}`}>
+          {nextSong.id} {nextSong.title} →
+        </a>
+      ) : null}
+    </nav>
+  )
+}
     {
       song.tunecore && (
         <section class="link-section">
@@ -451,4 +497,54 @@ const youtubeEmbedUrl = getYouTubeEmbedUrl(song.youtube);
       padding: 18px 0;
     }
   }
+  .song-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 36px 0;
+  border-top: 1px solid rgba(255,255,255,.12);
+}
+
+.song-navigation a {
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: opacity .2s;
+}
+
+.song-navigation a:hover {
+  opacity: .65;
+}
+
+.next-link {
+  margin-left: auto;
+  text-align: right;
+}
+.song-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  padding: 36px 0;
+  border-top: 1px solid rgba(255,255,255,.12);
+}
+
+.song-navigation a {
+  flex: 1;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.prev-link {
+  text-align: left;
+}
+
+.next-link {
+  text-align: right;
+}
+
 </style>

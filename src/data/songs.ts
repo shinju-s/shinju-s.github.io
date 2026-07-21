@@ -1,3 +1,5 @@
+import { lyrics } from "./lyrics";
+import { notes } from "./notes";
 export type Song = {
   id: string;
   albumNumber: number;
@@ -107,15 +109,20 @@ const songList = [
   albumTitle: "Rocking Roads",
   trackNumber: 3,
   title: "Resonates",
-  note: "https://note.com/shinju_s/n/ne5382de744ad",
   youtube: "https://youtu.be/KZ0R8891-_k",
   tunecore: "https://linkco.re/H44zrX6v",
 },
   { albumNumber: 10, albumTitle: "Rocking Roads", trackNumber: 4, title: "路来" },
 ] as const;
 
-export const songs: Song[] = songList.map((song) => ({
-  ...song,
-  id: `${song.albumNumber}-${song.trackNumber}`,
-  image: `/images/music/${albumFolders[song.albumNumber]}/${song.albumNumber}-${song.trackNumber}.png`,
-}));
+export const songs: Song[] = songList.map((song) => {
+  const id = `${song.albumNumber}-${song.trackNumber}`;
+
+  return {
+    ...song,
+    id,
+    image: `/images/music/${albumFolders[song.albumNumber]}/${id}.png`,
+    lyrics: lyrics[id],
+    note: notes[id],
+  };
+});

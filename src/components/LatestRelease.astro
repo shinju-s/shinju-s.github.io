@@ -63,9 +63,15 @@ const albumSongs = latestAlbum
           </li>
         ))}
       </ol>
-      <a class="album-button" href={`/music/${latestAlbum.slug}`}>
-  アルバムを見る
-</a>
+      <div class="album-buttons">
+  <a class="album-button" href={`/music/${latestAlbum.slug}`}>
+    アルバムを見る
+  </a>
+
+  <a class="album-button secondary" href="/music">
+    他のアルバムを見る
+  </a>
+</div>
     </div>
   </section>
 )}
@@ -186,5 +192,29 @@ const albumSongs = latestAlbum
 .album-button:hover {
   background: #ffffff;
   color: #111111;
+}
+.album-buttons {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+}
+
+.album-button {
+  margin-top: 0;
+}
+
+.album-button.secondary {
+  background: transparent;
+}
+
+@media (max-width: 760px) {
+  .album-buttons {
+    flex-direction: column;
+  }
+
+  .album-button {
+    text-align: center;
+  }
 }
 </style>
