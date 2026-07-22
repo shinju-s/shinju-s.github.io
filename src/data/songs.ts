@@ -1,5 +1,3 @@
-import { lyrics } from "./lyrics";
-import { notes } from "./notes";
 export type Song = {
   id: string;
   albumNumber: number;
@@ -8,7 +6,7 @@ export type Song = {
   title: string;
   image: string;
   youtube?: string;
-  tunecore?: string;
+  streaming?: string;
   note?: string;
   lyrics?: string;
 };
@@ -24,6 +22,7 @@ const albumFolders: Record<number, string> = {
   8: "08-51-percent",
   9: "09-past-and-present",
   10: "10-rocking-roads",
+  11: "11-kizashi",
 };
 
 const songList = [
@@ -104,25 +103,17 @@ const songList = [
   { albumNumber: 10, albumTitle: "Rocking Roads", trackNumber: 0, title: "Rolling Catmen" },
   { albumNumber: 10, albumTitle: "Rocking Roads", trackNumber: 1, title: "May Storm" },
   { albumNumber: 10, albumTitle: "Rocking Roads", trackNumber: 2, title: "Lock" },
-{
-  albumNumber: 10,
-  albumTitle: "Rocking Roads",
-  trackNumber: 3,
-  title: "Resonates",
-  youtube: "https://youtu.be/KZ0R8891-_k",
-  tunecore: "https://linkco.re/H44zrX6v",
-},
+  { albumNumber: 10, albumTitle: "Rocking Roads", trackNumber: 3, title: "Resonates" },
   { albumNumber: 10, albumTitle: "Rocking Roads", trackNumber: 4, title: "路来" },
+
+  { albumNumber: 11, albumTitle: "兆し", trackNumber: 1, title: "おまちどうさまー" },
+  { albumNumber: 11, albumTitle: "兆し", trackNumber: 2, title: "To you" },
+  { albumNumber: 11, albumTitle: "兆し", trackNumber: 3, title: "伝言" },
+  { albumNumber: 11, albumTitle: "兆し", trackNumber: 4, title: "未証明" },
 ] as const;
 
-export const songs: Song[] = songList.map((song) => {
-  const id = `${song.albumNumber}-${song.trackNumber}`;
-
-  return {
-    ...song,
-    id,
-    image: `/images/music/${albumFolders[song.albumNumber]}/${id}.png`,
-    lyrics: lyrics[id],
-    note: notes[id],
-  };
-});
+export const songs: Song[] = songList.map((song) => ({
+  ...song,
+  id: `${song.albumNumber}-${song.trackNumber}`,
+  image: `/images/music/${albumFolders[song.albumNumber]}/${song.albumNumber}-${song.trackNumber}.png`,
+}));

@@ -58,9 +58,14 @@ const getYouTubeEmbedUrl = (url?: string) => {
 
     if (parsedUrl.hostname.includes("youtube.com")) {
       const videoId = parsedUrl.searchParams.get("v");
+      const playlistId = parsedUrl.searchParams.get("list");
 
       if (videoId) {
         return `https://www.youtube.com/embed/${videoId}`;
+      }
+
+      if (playlistId) {
+        return `https://www.youtube.com/embed/videoseries?list=${playlistId}`;
       }
     }
   } catch {
@@ -170,25 +175,7 @@ const youtubeEmbedUrl = getYouTubeEmbedUrl(song.youtube);
         </section>
       )
     }
-{
-  (previousSong || nextSong) && (
-    <nav class="song-navigation" aria-label="前後の曲">
-      {previousSong ? (
-        <a class="prev-link" href={`/songs/${previousSong.id}`}>
-          ← {previousSong.id} {previousSong.title}
-        </a>
-      ) : (
-        <span />
-      )}
 
-      {nextSong ? (
-        <a class="next-link" href={`/songs/${nextSong.id}`}>
-          {nextSong.id} {nextSong.title} →
-        </a>
-      ) : null}
-    </nav>
-  )
-}
     {
       song.tunecore && (
         <section class="link-section">
@@ -208,7 +195,31 @@ const youtubeEmbedUrl = getYouTubeEmbedUrl(song.youtube);
         </section>
       )
     }
+{
+  (previousSong || nextSong) && (
+    <nav class="song-navigation" aria-label="前後の曲">
+      <div class="previous-song">
+        {
+          previousSong && (
+            <a href={`/songs/${previousSong.id}`}>
+              ← {previousSong.title}
+            </a>
+          )
+        }
+      </div>
 
+      <div class="next-song">
+        {
+          nextSong && (
+            <a href={`/songs/${nextSong.id}`}>
+              {nextSong.title} →
+            </a>
+          )
+        }
+      </div>
+    </nav>
+  )
+}
     {
       album && (
         <section class="album-section">
@@ -218,8 +229,8 @@ const youtubeEmbedUrl = getYouTubeEmbedUrl(song.youtube);
               <h2>{album.title}の収録曲</h2>
             </div>
 
-            <a class="album-back" href={`/music/${album.slug}`}>
-              アルバムに戻る →
+            <a class="album-back" href="/music">
+              アルバム一覧に戻る →
             </a>
           </div>
 
@@ -390,6 +401,33 @@ const youtubeEmbedUrl = getYouTubeEmbedUrl(song.youtube);
     color: #111111;
   }
 
+  .song-navigation {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 24px;
+    padding: 40px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .song-navigation a {
+    display: inline-block;
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.6;
+    text-decoration: underline;
+    text-underline-offset: 5px;
+    overflow-wrap: anywhere;
+  }
+
+  .previous-song {
+    text-align: left;
+  }
+
+  .next-song {
+    text-align: right;
+  }
+
   .album-heading {
     display: flex;
     align-items: flex-start;
@@ -497,54 +535,4 @@ const youtubeEmbedUrl = getYouTubeEmbedUrl(song.youtube);
       padding: 18px 0;
     }
   }
-  .song-navigation {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  padding: 36px 0;
-  border-top: 1px solid rgba(255,255,255,.12);
-}
-
-.song-navigation a {
-  color: #fff;
-  font-size: 1rem;
-  font-weight: 700;
-  text-decoration: none;
-  transition: opacity .2s;
-}
-
-.song-navigation a:hover {
-  opacity: .65;
-}
-
-.next-link {
-  margin-left: auto;
-  text-align: right;
-}
-.song-navigation {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  padding: 36px 0;
-  border-top: 1px solid rgba(255,255,255,.12);
-}
-
-.song-navigation a {
-  flex: 1;
-  color: #fff;
-  font-size: 1rem;
-  font-weight: 700;
-  text-decoration: none;
-}
-
-.prev-link {
-  text-align: left;
-}
-
-.next-link {
-  text-align: right;
-}
-
 </style>
