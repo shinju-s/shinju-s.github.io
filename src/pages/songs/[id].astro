@@ -83,10 +83,12 @@ const musicRecordingJsonLd = {
   "@type": "MusicRecording",
   name: song.title,
   url: Astro.url.href,
-  inAlbum: {
-    "@type": "MusicAlbum",
-    name: album.title,
-  },
+  inAlbum: album
+  ? {
+      "@type": "MusicAlbum",
+      name: album.title,
+    }
+  : undefined,
   byArtist: {
     "@type": "Person",
     name: "清水慎樹",
@@ -98,7 +100,8 @@ const musicRecordingJsonLd = {
 <BaseLayout
   title={`${song.title} | 清水慎樹 Official Website`}
   description={`清水慎樹の楽曲『${song.title}』の作品ページです。`}
-><Breadcrumb
+>
+<Breadcrumb
   items={[
     { label: "Home", href: "/" },
     { label: "Music", href: "/music" },
