@@ -3,6 +3,7 @@ import Breadcrumb from "../../components/Breadcrumb.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import { albums } from "../../data/albums";
 import { songs } from "../../data/songs";
+import { getArticleBySongId } from "../../lib/note";
 
 export function getStaticPaths() {
   return songs.map((song) => {
@@ -28,6 +29,7 @@ type Props = {
 };
 
 const { song, album } = Astro.props as Props;
+const article = await getArticleBySongId(song.id);
 
 const albumSongs = songs
   .filter((item) => item.albumNumber === song.albumNumber)
@@ -163,7 +165,7 @@ const youtubeEmbedUrl = getYouTubeEmbedUrl(song.youtube);
     </section>
 
     {
-      song.note && (
+      (article || song.note) && (
         <section class="link-section">
           <div>
             <p class="section-label">NOTE</p>
@@ -172,7 +174,7 @@ const youtubeEmbedUrl = getYouTubeEmbedUrl(song.youtube);
 
           <a
             class="round-button"
-            href={song.note}
+            href={article?.link ?? song.note}
             target="_blank"
             rel="noopener noreferrer"
           >
