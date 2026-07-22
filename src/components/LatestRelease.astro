@@ -2,7 +2,7 @@
 import { albums } from "../data/albums";
 import { songs } from "../data/songs";
 
-const latestAlbum = [...albums].sort(
+const latestAlbum = albums.filter((album) => album.released).sort(
   (a, b) => b.releaseOrder - a.releaseOrder
 )[0];
 

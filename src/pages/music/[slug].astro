@@ -5,7 +5,7 @@ import { albums } from "../../data/albums";
 import { songs } from "../../data/songs";
 
 export function getStaticPaths() {
-  return albums.map((album) => ({
+  return albums.filter((album) => album.released).map((album) => ({
     params: {
       slug: album.slug,
     },

@@ -89,7 +89,7 @@ const youtubeEmbedUrl = getYouTubeEmbedUrl(song.youtube);
       ? [
           {
             label: album.title,
-            href: `/music/${album.slug}`,
+            ...(album.released ? { href: `/music/${album.slug}` } : {}),
           },
         ]
       : []),
@@ -104,9 +104,15 @@ const youtubeEmbedUrl = getYouTubeEmbedUrl(song.youtube);
 
       {
         album && (
-          <a class="album-name" href={`/music/${album.slug}`}>
-            {album.title}
-          </a>
+          album.released ? (
+            <a class="album-name" href={`/music/${album.slug}`}>
+              {album.title}
+            </a>
+          ) : (
+            <span class="album-name unreleased">
+              {album.title}（発売前）
+            </span>
+          )
         )
       }
 
