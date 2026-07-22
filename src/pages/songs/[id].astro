@@ -78,6 +78,21 @@ const getYouTubeEmbedUrl = (url?: string) => {
 };
 
 const youtubeEmbedUrl = getYouTubeEmbedUrl(song.youtube);
+const musicRecordingJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "MusicRecording",
+  name: song.title,
+  url: Astro.url.href,
+  inAlbum: {
+    "@type": "MusicAlbum",
+    name: album.title,
+  },
+  byArtist: {
+    "@type": "Person",
+    name: "清水慎樹",
+    url: "https://shinju-s.github.io",
+  },
+};
 ---
 
 <BaseLayout
@@ -98,7 +113,11 @@ const youtubeEmbedUrl = getYouTubeEmbedUrl(song.youtube);
     { label: song.title },
   ]}
 />
-  <main>
+  <script
+  type="application/ld+json"
+  set:html={JSON.stringify(musicRecordingJsonLd)}
+/>
+<main>
     <section class="song-hero">
       <p class="song-number">{song.id}</p>
 
