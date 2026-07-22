@@ -9,7 +9,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "publish": "git add . && (git diff --cached --quiet || git commit -m \"サイト更新\") && git push"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",
