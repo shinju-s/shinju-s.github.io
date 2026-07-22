@@ -1,0 +1,220 @@
+---
+import { albums } from "../data/albums";
+import { songs } from "../data/songs";
+
+const latestAlbum = albums.filter((album) => album.released).sort(
+  (a, b) => b.releaseOrder - a.releaseOrder
+)[0];
+
+const albumSongs = latestAlbum
+  ? songs
+      .filter((song) => song.albumNumber === latestAlbum.releaseOrder)
+      .sort((a, b) => a.trackNumber - b.trackNumber)
+  : [];
+  const toOrdinal = (number: number) => {
+  const lastTwoDigits = number % 100;
+
+  if (lastTwoDigits >= 11 && lastTwoDigits <= 13) {
+    return `${number}th`;
+  }
+
+  switch (number % 10) {
+    case 1:
+      return `${number}st`;
+    case 2:
+      return `${number}nd`;
+    case 3:
+      return `${number}rd`;
+    default:
+      return `${number}th`;
+  }
+};
+---
+
+{latestAlbum && (
+  <section class="latest-album" id="music">
+    <a
+  class="cover-area"
+  href={`/music/${latestAlbum.slug}`}
+  aria-label={`${latestAlbum.title} の収録曲を見る`}
+>
+  <img
+    src={latestAlbum.cover}
+    alt={`${latestAlbum.title} アルバムジャケット`}
+    width="800"
+    height="800"
+  />
+</a>
+
+    <div class="album-info">
+      <p class="label">LATEST RELEASE</p>
+
+      <h2>{latestAlbum.title}</h2>
+
+      <p class="album-number">
+  {toOrdinal(latestAlbum.releaseOrder)} Album
+</p>
+
+      <ol class="track-list" start="0">
+        {albumSongs.map((song) => (
+          <li>
+            <span class="track-number">{song.trackNumber}</span>
+            <span>{song.title}</span>
+          </li>
+        ))}
+      </ol>
+      <div class="album-buttons">
+  <a class="album-button" href={`/music/${latestAlbum.slug}`}>
+    アルバムを見る
+  </a>
+
+  <a class="album-button secondary" href="/music">
+    他のアルバムを見る
+  </a>
+</div>
+    </div>
+  </section>
+)}
+
+<style>
+  .latest-album {
+    width: min(960px, 88vw);
+    margin: 0 auto;
+    padding: 80px 0;
+    display: grid;
+    grid-template-columns: minmax(240px, 360px) 1fr;
+    gap: clamp(36px, 6vw, 70px);
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .cover-area {
+    width: 100%;
+    max-width: 360px;
+    aspect-ratio: 1 / 1;
+    overflow: hidden;
+    border-radius: 16px;
+    background: #161618;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.4);
+  }
+
+  .cover-area img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .label {
+    margin: 0 0 12px;
+    color: #909096;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.24em;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    line-height: 1.05;
+    letter-spacing: -0.04em;
+  }
+
+  .album-number {
+    margin: 15px 0 28px;
+    color: #aaaab0;
+  }
+
+  .track-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .track-list li {
+    display: grid;
+    grid-template-columns: 34px 1fr;
+    gap: 8px;
+    padding: 11px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .track-number {
+    color: #77777e;
+    font-variant-numeric: tabular-nums;
+  }
+
+  @media (max-width: 760px) {
+    .latest-album {
+      grid-template-columns: 1fr;
+      padding: 64px 0;
+    }
+
+    .cover-area {
+      max-width: 320px;
+      margin: 0 auto;
+    }
+  }
+  .cover-area {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.cover-area img {
+  transition:
+    transform 0.4s ease,
+    opacity 0.4s ease;
+}
+
+.cover-area:hover img {
+  transform: scale(1.025);
+  opacity: 0.92;
+}
+
+.album-button {
+  display: inline-block;
+  margin-top: 28px;
+  padding: 12px 22px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  color: #ffffff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+.album-button:hover {
+  background: #ffffff;
+  color: #111111;
+}
+.album-buttons {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+}
+
+.album-button {
+  margin-top: 0;
+}
+
+.album-button.secondary {
+  background: transparent;
+}
+
+@media (max-width: 760px) {
+  .album-buttons {
+    flex-direction: column;
+  }
+
+  .album-button {
+    text-align: center;
+  }
+}
+</style>
