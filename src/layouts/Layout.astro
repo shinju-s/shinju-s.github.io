@@ -1,23 +1,50 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
+---
+interface Props {
+  title?: string;
+  description?: string;
+}
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+const {
+  title = "清水慎樹 Official Website",
+  description =
+    "ARMS・清水慎樹の公式サイト。楽曲、歌詞、アルバム、制作ノートを公開しています。",
+} = Astro.props;
+
+const url = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width" />
+
+<title>{title}</title>
+
+<meta
+  name="description"
+  content={description}
+/>
+
+<link rel="canonical" href={url.href} />
+
+<meta name="robots" content="index,follow" />
+
+<link rel="icon" href="/favicon.ico" />
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={url.href} />
+
+<meta name="twitter:card" content="summary_large_image" />
+
+<meta name="generator" content={Astro.generator} />
+
+</head>
+
+<body>
+<slot />
+</body>
+</html>
