@@ -1,0 +1,82 @@
+name: Daily site health check
+
+on:
+  schedule:
+    # Every day at 09:00 JST
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build site
+        run: npm run build
+
+      - name: Check published site
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          base_url="https://shinju-s.github.io"
+          pages=(
+            "/"
+            "/music/"
+            "/lyrics/"
+            "/profile/"
+            "/note/"
+            "/robots.txt"
+            "/sitemap-index.xml"
+            "/sitemap-0.xml"
+          )
+
+          for path in "${pages[@]}"; do
+            echo "Checking ${base_url}${path}"
+            curl \
+              --fail \
+              --location \
+              --retry 3 \
+              --retry-all-errors \
+              --connect-timeout 10 \
+              --max-time 30 \
+              --silent \
+              --show-error \
+              --output /dev/null \
+              "${base_url}${path}"
+          done
+
+          missing_status="$(curl \
+            --location \
+            --retry 3 \
+            --retry-all-errors \
+            --connect-timeout 10 \
+            --max-time 30 \
+            --silent \
+            --show-error \
+            --output /dev/null \
+            --write-out '%{http_code}' \
+            "${base_url}/health-check-page-that-does-not-exist")"
+
+          if [[ "${missing_status}" != "404" ]]; then
+            echo "Expected a 404 response for a missing page, received ${missing_status}."
+            exit 1
+          fi
+
+          echo "Published site health check passed."
