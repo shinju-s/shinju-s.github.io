@@ -33,9 +33,14 @@ const heroSongs = songs.map((song) => ({
 const fallbackSong = heroSongs[0];
 ---
 
-<BaseLayout>
+<BaseLayout
+  title="清水慎樹 公式ホームページ | 音楽・歌詞・制作ノート"
+  description="清水慎樹の公式ホームページ。音楽作品、歌詞、映像、noteでの制作記録を紹介します。"
+>
   <main>
     <section class="hero">
+      <p class="site-heading">清水慎樹 公式ホームページ</p>
+
       <a
         class="hero-cover-link"
         href={`/songs/${fallbackSong.id}`}
@@ -134,6 +139,13 @@ const fallbackSong = heroSongs[0];
     display: block;
     margin-bottom: 36px;
     border-radius: 22px;
+  }
+
+  .site-heading {
+    margin: 0 0 24px;
+    color: #b6b6bc;
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
   }
 
   .hero-cover {
