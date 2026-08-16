@@ -111,6 +111,10 @@ const youtubeLinks: Record<string, string> = {
   "10-2": "https://www.youtube.com/watch?v=WtiTXChqId4",
   "10-3": "https://www.youtube.com/watch?v=KZ0R8891-_k",
   "10-4": "https://www.youtube.com/watch?v=hZV5eSlFIMI",
+  "11-1": "https://www.youtube.com/watch?v=HRny8b86FsI",
+  "11-2": "https://www.youtube.com/watch?v=d_ZJ37axwoc",
+  "11-3": "https://www.youtube.com/watch?v=Yrl3Q0PnTrc",
+  "11-4": "https://www.youtube.com/watch?v=zJAIcUSlZGg",
 };
 
 const songList = [
