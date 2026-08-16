@@ -83,6 +83,6 @@ export const albums: Album[] = [
     title: "兆し",
     slug: "kizashi",
     cover: "/images/music/11-kizashi/cover11.png",
-    released: false,
+    released: true,
   },
 ];
