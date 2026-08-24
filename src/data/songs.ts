@@ -121,7 +121,7 @@ const songList = [
   { albumNumber: 1, albumTitle: "Bridging Time", trackNumber: 1, title: "Next Door" },
   { albumNumber: 1, albumTitle: "Bridging Time", trackNumber: 2, title: "One Light" },
   { albumNumber: 1, albumTitle: "Bridging Time", trackNumber: 3, title: "SAI" },
-  { albumNumber: 1, albumTitle: "Bridging Time", trackNumber: 4, title: "Ganerations Eater" },
+  { albumNumber: 1, albumTitle: "Bridging Time", trackNumber: 4, title: "Generations Eater" },
   { albumNumber: 1, albumTitle: "Bridging Time", trackNumber: 5, title: "先へ" },
   { albumNumber: 1, albumTitle: "Bridging Time", trackNumber: 6, title: "Final Answer" },
   { albumNumber: 1, albumTitle: "Bridging Time", trackNumber: 7, title: "あなたの好みになりたい" },
