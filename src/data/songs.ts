@@ -25,6 +25,7 @@ const albumFolders: Record<number, string> = {
   9: "09-past-and-present",
   10: "10-rocking-roads",
   11: "11-kizashi",
+  12: "12-kono-natsu-hajimemashite",
 };
 
 const albumTunecore: Record<number, string> = {
@@ -113,6 +114,9 @@ const youtubeLinks: Record<string, string> = {
   "11-2": "https://www.youtube.com/watch?v=d_ZJ37axwoc",
   "11-3": "https://www.youtube.com/watch?v=Yrl3Q0PnTrc",
   "11-4": "https://www.youtube.com/watch?v=zJAIcUSlZGg",
+  "12-1": "https://www.youtube.com/watch?v=sQ97EeVedAg",
+  "12-2": "https://www.youtube.com/watch?v=cFbCsEf8zu8",
+  "12-3": "https://www.youtube.com/watch?v=_66KpEdTFHM",
 };
 
 const songList = [
@@ -200,6 +204,10 @@ const songList = [
   { albumNumber: 11, albumTitle: "兆し", trackNumber: 2, title: "To you" },
   { albumNumber: 11, albumTitle: "兆し", trackNumber: 3, title: "伝言" },
   { albumNumber: 11, albumTitle: "兆し", trackNumber: 4, title: "未証明" },
+
+  { albumNumber: 12, albumTitle: "この夏、はじめまして", trackNumber: 1, title: "みつめたい" },
+  { albumNumber: 12, albumTitle: "この夏、はじめまして", trackNumber: 2, title: "実ゎAGAってる" },
+  { albumNumber: 12, albumTitle: "この夏、はじめまして", trackNumber: 3, title: "Life Line" },
 ] as const;
 
 export const songs: Song[] = songList.map((song) => {

@@ -85,4 +85,11 @@ export const albums: Album[] = [
     cover: "/images/music/11-kizashi/cover11.png",
     released: true,
   },
+  {
+    releaseOrder: 12,
+    title: "この夏、はじめまして",
+    slug: "kono-natsu-hajimemashite",
+    cover: "/images/music/12-kono-natsu-hajimemashite/cover12.png",
+    released: false,
+  },
 ];
