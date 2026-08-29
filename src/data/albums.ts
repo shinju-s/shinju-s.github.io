@@ -90,6 +90,6 @@ export const albums: Album[] = [
     title: "この夏、はじめまして",
     slug: "kono-natsu-hajimemashite",
     cover: "/images/music/12-kono-natsu-hajimemashite/cover12.png",
-    released: false,
+    released: true,
   },
 ];
